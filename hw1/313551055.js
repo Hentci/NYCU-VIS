@@ -1,5 +1,5 @@
 // 讀取資料並執行
-d3.csv("./iris.csv").then(function(data) {
+d3.csv("../datasets/iris.csv").then(function(data) {
     data = data.slice(0, -1)
 
     // 設定圖表的邊界與尺寸
