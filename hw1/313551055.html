@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HW 1 - Scatter Plots</title>
+    <!-- 新增CSS連結來控制頁面外觀 -->
+    <link rel="stylesheet" href="313551055.css"> <!-- 新增CSS連結 -->
+</head>
+<body>
+    <header>
+        <h1>Scatter Plot Visualization</h1> <!-- 頁面標題 -->
+    </header>
+
+    <!-- 用來放置散點圖的div -->
+    <div id="my_dataviz"></div>
+
+    <!-- 選擇 X 與 Y 軸的控制欄 -->
+    <div class="controls">
+        <fieldset class="axis-selector">
+            <legend>Select X Axis</legend> <!-- X軸選擇區 -->
+            <div>
+              <input type="radio" id="X_sepal_length" name="X_axis" value="sepal length" checked />
+              <label for="X_sepal_length">Sepal Length</label>
+            </div>
+            <div>
+              <input type="radio" id="X_sepal_width" name="X_axis" value="sepal width" />
+              <label for="X_sepal_width">Sepal Width</label>
+            </div>
+            <div>
+              <input type="radio" id="X_petal_length" name="X_axis" value="petal length" />
+              <label for="X_petal_length">Petal Length</label>
+            </div>
+            <div>
+              <input type="radio" id="X_petal_width" name="X_axis" value="petal width" />
+              <label for="X_petal_width">Petal Width</label>
+            </div>
+        </fieldset>
+
+        <fieldset class="axis-selector">
+            <legend>Select Y Axis</legend> <!-- Y軸選擇區 -->
+            <div>
+              <input type="radio" id="Y_sepal_length" name="Y_axis" value="sepal length"/>
+              <label for="Y_sepal_length">Sepal Length</label>
+            </div>
+            <div>
+              <input type="radio" id="Y_sepal_width" name="Y_axis" value="sepal width" checked />
+              <label for="Y_sepal_width">Sepal Width</label>
+            </div>
+            <div>
+              <input type="radio" id="Y_petal_length" name="Y_axis" value="petal length" />
+              <label for="Y_petal_length">Petal Length</label>
+            </div>
+            <div>
+                <input type="radio" id="Y_petal_width" name="Y_axis" value="petal width" />
+                <label for="Y_petal_width">Petal Width</label>
+            </div>
+        </fieldset>
+    </div>
+
+    <footer class="footer">
+        <p>Student ID: 313551055</p>
+    </footer>
+
+    <!-- 引入D3.js用於可視化 -->
+    <script src="https://d3js.org/d3.v6.js"></script>
+    <!-- 外部JavaScript檔案，處理圖表繪製與互動 -->
+    <script src="./313551055.js"></script>
+</body>
+</html>
