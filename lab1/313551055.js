@@ -68,7 +68,7 @@ d3.csv("./iris.csv").then(function(data) {
         // 設定顏色
         var color = d3.scaleOrdinal()
             .domain(["Iris-setosa", "Iris-versicolor", "Iris-virginica"])
-            .range(["#ff000080", "#00ff0080", "#0000ff80"]);
+            .range(["#ff6f61", "#6b5b95", "#88b04b"]); 
 
         // 新增圖例
         var legends = ["setosa", "versicolor", "virginica"];
