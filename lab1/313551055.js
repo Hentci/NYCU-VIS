@@ -1,5 +1,5 @@
 // 讀取資料並執行
-d3.csv("/Users/hentci/code/NYCU_VIS/datasets/iris.csv").then(function(data) {
+d3.csv("http://vis.lab.djosix.com:2024/data/iris.csv").then(function(data) {
     data = data.slice(0, -1)
 
     // 設定圖表的邊界與尺寸
