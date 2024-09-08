@@ -1,5 +1,5 @@
 // 讀取資料並繪製散點圖
-d3.csv("http://vis.lab.djosix.com:2024/data/iris.csv").then(function (dataset) {
+d3.csv("../datasets/iris.csv").then(function (dataset) {
     // 去除最後一列（若存在）
     dataset = dataset.slice(0, -1);
 
