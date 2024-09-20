@@ -1,0 +1,95 @@
+/* 全局樣式設置 */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+header {
+    background-color: #4CAF50;
+    padding: 20px;
+    color: white;
+}
+
+h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+/* 控制平行座標圖的佈局 */
+#my_dataviz {
+    width: 80%;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 說明文字樣式 */
+.instructions {
+    margin: 20px auto;
+    width: 80%;
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 14px;
+    text-align: left;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 軸與線條樣式 */
+.axis text {
+    font-size: 12px;
+}
+
+.axis line,
+.axis path {
+    stroke: #ccc;
+}
+
+/* 標註可拖動的軸標籤樣式 */
+.drag-label {
+    font-weight: bold;
+    fill: #4CAF50; /* 顯眼的顏色 */
+    cursor: grab;  /* 顯示可拖動狀態 */
+}
+
+.drag-label:hover {
+    fill: #ff5722; /* 滑鼠懸停時變色 */
+}
+
+path {
+    fill: none;
+    stroke-width: 2;
+}
+
+path:hover {
+    stroke-width: 4;
+    opacity: 1;
+}
+
+/* 類別圖例樣式 */
+.legend rect {
+    stroke: #000;
+}
+
+.legend text {
+    font-size: 12px;
+}
+
+/* 底部訊息樣式 */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    margin-top: 40px;
+}
+
+footer p {
+    margin: 5px 0;
+    font-size: 14px;
+}
