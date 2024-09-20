@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HW2-313551055</title>
+    <!-- 新增CSS連結來控制頁面外觀 -->
+    <link rel="stylesheet" href="313551055.css"> <!-- 新增CSS連結 -->
+</head>
+<body>
+    <header>
+        <h1>Parallel Coordinates Visualization</h1> <!-- 頁面標題 -->
+    </header>
+
+    <!-- 說明如何拖動軸 -->
+    <div class="instructions">
+        <p>Instructions: You can drag and reorder the axes by clicking on the axis labels and moving them left or right. This will help you better observe the relationships between attributes.</p>
+    </div>
+
+    <!-- 用來放置平行座標圖的div -->
+    <div id="my_dataviz"></div>
+
+    <footer class="footer">
+        <p>Student ID: 313551055</p>
+    </footer>
+
+    <!-- 引入D3.js用於可視化 -->
+    <script src="https://d3js.org/d3.v6.js"></script>
+    <!-- 外部JavaScript檔案，處理圖表繪製與互動 -->
+    <script src="./313551055.js"></script>
+</body>
+</html>
