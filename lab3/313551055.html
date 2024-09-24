@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HW3 - Correlation Matrix</title>
+    <link rel="stylesheet" href="313551055.css">
+</head>
+<body>
+    <header>
+        <h1>Correlation Matrix Visualization</h1>
+    </header>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <div class="legend-container"></div>
+        <div id="cm"></div>
+
+        <!-- Radio buttons for sex selection -->
+        <div class="radio-container">
+            <fieldset>
+                <legend>Select Sex</legend>
+                <label>
+                    <input type="radio" name="sex" value="male" checked> Male
+                </label>
+                <label>
+                    <input type="radio" name="sex" value="female"> Female
+                </label>
+                <label>
+                    <input type="radio" name="sex" value="infant"> Infant
+                </label>
+            </fieldset>
+        </div>
+    </div>
+
+    <footer>
+        <p>Student ID: 313551055</p>
+    </footer>
+
+    <!-- Load D3.js and other scripts -->
+    <script src="https://d3js.org/d3.v6.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.1/math.min.js"></script>
+    <script src="313551055.js"></script>
+</body>
+</html>
