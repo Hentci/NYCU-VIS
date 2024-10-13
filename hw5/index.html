@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 提供網頁的簡短描述，有助於搜索引擎優化 (SEO) -->
+    <meta name="description" content="Stacked bar chart visualization of World University Rankings using D3.js">
+    <title>World University Rankings Stacked Bar Chart | Student Assignment</title>
+    <!-- 連結到外部 CSS 文件 -->
+    <link rel="stylesheet" href="313551055.css">
+</head>
+
+<body>
+    <!-- 網頁主標題 -->
+    <h1>World University Rankings Stacked Bar Chart</h1>
+
+    <!-- 用於排序選項的表單區域 -->
+    <fieldset>
+        <legend>Sorting Options</legend>
+        <!-- 排序依據下拉選單 -->
+        <label for="sort-by">Sort by: </label>
+        <select name="sort-by" id="sort-by" aria-label="Sort by">
+            <option value="scores_overall" selected>Overall Score</option>
+            <option value="scores_teaching">Teaching Score</option>
+            <option value="scores_research">Research Score</option>
+            <option value="scores_citations">Citations Score</option>
+            <option value="scores_industry_income">Industry Income Score</option>
+            <option value="scores_international_outlook">International Outlook Score</option>
+        </select>
+        <!-- 排序順序下拉選單 -->
+        <label for="sort-order">Sort order: </label>
+        <select name="sort-order" id="sort-order" aria-label="Sort order">
+            <option value="descending" selected>Descending</option>
+            <option value="ascending">Ascending</option>
+        </select>
+    </fieldset>
+
+    <!-- 用於顯示堆疊條形圖的容器 -->
+    <div id="my_dataviz" aria-label="World University Rankings Stacked Bar Chart"></div>
+    
+    <!-- 頁腳區域，顯示學生 ID -->
+    <footer>
+        <p>Student ID: 313551055</p>
+    </footer>
+</body>
+
+<!-- 引入 D3.js 庫，defer 屬性確保在 HTML 解析完成後才執行腳本 -->
+<script src="https://d3js.org/d3.v7.min.js" defer></script>
+<!-- 引入自定義 JavaScript 文件 -->
+<script src="313551055.js" defer></script>
+
+</html>
