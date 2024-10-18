@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThemeRiver - House Property Sales</title>
+    <!-- Import Roboto font with different weights -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Import Bootstrap 4.6.0 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <!-- Import custom CSS file -->
+    <link rel="stylesheet" href="313551055.css">
+</head>
+<body>
+    <!-- Main container -->
+    <div class="container">
+        <!-- Page header -->
+        <header class="text-center py-5">
+            <h1 class="display-4">ThemeRiver Visualization</h1>
+            <h2 class="h4 text-muted">
+                <!-- Link to data source, opens in a new tab -->
+                <a href="https://www.kaggle.com/datasets/htagholdings/property-sales/" target="_blank" rel="noopener noreferrer">House Property Sales Time Series</a>
+            </h2>
+        </header>
+
+        <!-- Main content area -->
+        <div class="row">
+            <!-- ThemeRiver chart container -->
+            <div id="my_dataviz" class="col-12 col-lg-8 mb-4"></div>
+            <!-- Legend area -->
+            <div class="col-12 col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="h5 mb-0">Legend</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text"><i class="fas fa-arrows-alt"></i> Drag to reorder keys</p>
+                        <!-- Container for draggable legend items -->
+                        <div id="blocks" class="list-group draggable"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page footer -->
+        <footer class="text-center text-muted py-3 mt-5">
+            <p class="mb-0">Student ID: 313551055</p>
+        </footer>
+    </div>
+
+    <!-- Import D3.js library -->
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <!-- Import Moment.js library for date handling -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <!-- Import Sortable.js library for drag-and-drop functionality -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <!-- Import Font Awesome icon library -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <!-- Import custom JavaScript file -->
+    <script src="313551055.js"></script>
+</body>
+</html>
