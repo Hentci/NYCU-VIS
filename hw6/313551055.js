@@ -2,7 +2,7 @@
 const MARGIN = { top: 20, right: 30, bottom: 30, left: 60 };
 const WIDTH = 800 - MARGIN.left - MARGIN.right;
 const HEIGHT = 500 - MARGIN.top - MARGIN.bottom;
-const DATA_PATH = "http://vis.lab.djosix.com:2024/data/ma_lga_12345.csv";
+const DATA_PATH = "../datasets/ma_lga_12345.csv";
 
 // Create SVG
 const svg = d3.select("#my_dataviz")
