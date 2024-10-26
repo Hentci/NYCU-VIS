@@ -606,6 +606,58 @@ d3.sankey = function () {
             .attr('text-anchor', 'middle')
             .text(d => d.name.split('-')[0]);
 
+            const legendGroup = svg.append('g')
+            .attr('class', 'legend')
+            .attr('transform', `translate(${width}, 80)`);  // 調整位置到右側
+        
+        // 添加圖例標題
+        legendGroup.append('text')
+            .attr('class', 'legend-title')
+            .attr('x', 0)
+            .attr('y', -20)
+            .style('font-size', '14px')
+            .style('font-weight', 'bold')
+            .text('Attributes Legend');
+        
+        // 為每個屬性創建圖例項
+        Object.entries(colorScales).forEach(([attribute, colors], index) => {
+            const attributeGroup = legendGroup.append('g')
+                .attr('transform', `translate(0, ${index * 80})`);
+        
+            // 添加屬性名稱
+            attributeGroup.append('text')
+                .attr('x', 0)
+                .attr('y', 0)
+                .style('font-size', '12px')
+                .style('font-weight', 'bold')
+                .text(attribute);
+        
+            // 為每個顏色值創建圖例項
+            colors.forEach((color, colorIndex) => {
+                const legendItem = attributeGroup.append('g')
+                    .attr('transform', `translate(0, ${colorIndex * 20 + 10})`);
+        
+                // 添加顏色方塊
+                legendItem.append('rect')
+                    .attr('width', 15)
+                    .attr('height', 15)
+                    .attr('rx', 2)
+                    .style('fill', color);
+        
+                // 找到對應的節點來獲取實際值
+                const node = graph.nodes.find(n => 
+                    n.name.startsWith(attribute) && n.cid === colorIndex
+                );
+                
+                // 添加文字標籤
+                legendItem.append('text')
+                    .attr('x', 25)
+                    .attr('y', 12)
+                    .style('font-size', '12px')
+                    .text(node ? node.name.split('-')[1] : `Value ${colorIndex + 1}`);
+            });
+        });
+
         d3.select('#resetBtn').on('click', resetView);
 
         return () => {

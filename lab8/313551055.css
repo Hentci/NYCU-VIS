@@ -41,7 +41,6 @@
     fill: none;
     stroke: #000;
     stroke-opacity: 0.2;
-    /* pointer-events: none;  防止連接線干擾拖動 */
     mix-blend-mode: multiply;  /* 改善視覺效果 */
 }
 
@@ -205,4 +204,26 @@
 .link:hover {
     stroke-opacity: 0.5;
     cursor: pointer;
+}
+
+
+/* 圖例樣式 */
+.legend text {
+    fill: #2d3748;
+}
+
+.legend-title {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    fill: #1a202c;
+}
+
+/* 圖例項目陰影效果 */
+.legend rect {
+    stroke: rgba(0, 0, 0, 0.1);
+    stroke-width: 1px;
+}
+
+.legend rect:hover {
+    stroke: rgba(0, 0, 0, 0.2);
+    stroke-width: 2px;
 }
