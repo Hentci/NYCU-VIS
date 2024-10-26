@@ -1,229 +1,144 @@
-/* 基礎容器設置 */
+/* ======= 基礎容器設置 ======= */
 #sankey-diagram {
-    cursor: default;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    position: relative;
-    overflow: visible;
+    cursor: default;                /* 預設游標樣式 */
+    -webkit-user-select: none;      /* Safari 瀏覽器禁止選擇文字 */
+    -moz-user-select: none;         /* Firefox 瀏覽器禁止選擇文字 */
+    -ms-user-select: none;          /* IE/Edge 瀏覽器禁止選擇文字 */
+    user-select: none;              /* 標準語法：禁止選擇文字 */
+    position: relative;             /* 設定相對定位 */
+    overflow: visible;              /* 允許內容溢出顯示 */
 }
 
-/* 節點樣式 */
+/* ======= 節點樣式 ======= */
 .node {
-    isolation: isolate;
+    isolation: isolate;             /* 建立新的堆疊上下文 */
 }
 
 .node rect {
-    fill-opacity: 0.9;
-    shape-rendering: crispEdges;
-    stroke-width: 1px;
-    cursor: ns-resize;  /* 更好的拖動指示 */
-    transition: none;   /* 移除所有過渡效果以提升拖動性能 */
+    fill-opacity: 0.9;             /* 節點填充透明度 */
+    shape-rendering: crispEdges;    /* 使邊緣更清晰 */
+    stroke-width: 1px;             /* 邊框寬度 */
+    cursor: ns-resize;             /* 南北方向的調整游標 */
+    transition: none;              /* 禁用過渡效果以提升性能 */
 }
 
 .node rect:hover {
-    fill-opacity: 1;
-    stroke-width: 2px;
+    fill-opacity: 1;               /* 懸停時完全不透明 */
+    stroke-width: 2px;             /* 懸停時加粗邊框 */
 }
 
 .node text {
-    pointer-events: none;
-    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
-    font-size: 12px;
-    font-weight: 500;
-    dominant-baseline: middle;
-    fill: #333;
+    pointer-events: none;          /* 防止文字干擾鼠標事件 */
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);  /* 文字陰影效果 */
+    font-size: 12px;              /* 文字大小 */
+    font-weight: 500;             /* 文字粗細 */
+    dominant-baseline: middle;     /* 文字垂直置中 */
+    fill: #333;                   /* 文字顏色 */
 }
 
-/* 連接線樣式 */
+/* ======= 連接線樣式 ======= */
 .link {
-    fill: none;
-    stroke: #000;
-    stroke-opacity: 0.2;
-    mix-blend-mode: multiply;  /* 改善視覺效果 */
+    fill: none;                    /* 無填充 */
+    stroke: #000;                  /* 線條顏色 */
+    stroke-opacity: 0.2;           /* 線條透明度 */
+    mix-blend-mode: multiply;      /* 混合模式：重疊部分顏色混合 */
 }
 
-/* 屬性標題 */
+/* ======= 屬性標題樣式 ======= */
 .attribute-title {
-    font-size: 16px;
-    font-weight: 600;
-    fill: #2d3748;
-    text-anchor: middle;
-    pointer-events: none;
-    text-shadow: 0 1px 0 #fff;
+    font-size: 16px;              /* 標題文字大小 */
+    font-weight: 600;             /* 文字粗細 */
+    fill: #2d3748;                /* 文字顏色 */
+    text-anchor: middle;          /* 文字水平置中 */
+    pointer-events: none;         /* 防止文字干擾鼠標事件 */
+    text-shadow: 0 1px 0 #fff;    /* 文字陰影效果 */
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;  /* 字體設定 */
+}
+
+/* ======= Tooltip 相關樣式 ======= */
+/* Tooltip 容器 */
+.tooltip {
+    position: absolute;           /* 絕對定位 */
+    padding: 8px 12px;           /* 內邊距 */
+    background: rgba(0, 0, 0, 0.8); /* 背景色（半透明黑） */
+    color: white;                /* 文字顏色 */
+    border-radius: 4px;          /* 圓角 */
+    font-size: 12px;             /* 文字大小 */
+    pointer-events: none;        /* 防止干擾鼠標事件 */
+    z-index: 1000;              /* 層級設定 */
+    opacity: 0;                  /* 預設隱藏 */
+    transition: opacity 0.2s;    /* 淡入淡出效果 */
+}
+
+/* Tooltip 內容布局 */
+.tooltip-content {
+    display: flex;               /* Flexbox 布局 */
+    flex-direction: column;      /* 垂直排列 */
+    gap: 4px;                   /* 元素間距 */
+}
+
+.tooltip-row {
+    display: flex;               /* Flexbox 布局 */
+    justify-content: space-between; /* 兩端對齊 */
+    gap: 12px;                  /* 元素間距 */
+}
+
+.tooltip-label {
+    font-weight: 500;           /* 文字粗細 */
+    color: #a0aec0;             /* 標籤文字顏色 */
+}
+
+.tooltip-value {
+    font-weight: 600;           /* 數值文字粗細 */
+}
+
+/* ======= 圖例樣式 ======= */
+.legend text {
+    fill: #2d3748;              /* 圖例文字顏色 */
+}
+
+.legend-title {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    fill: #1a202c;              /* 圖例標題顏色 */
 }
 
-/* 圖例樣式 */
-.legend-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 8px;
-    padding: 16px;
-    background: #f7fafc;
-    border-radius: 8px;
-    margin-bottom: 24px;
+/* 圖例方塊樣式 */
+.legend rect {
+    stroke: rgba(0, 0, 0, 0.1);  /* 方塊邊框顏色 */
+    stroke-width: 1px;           /* 邊框寬度 */
 }
 
-.legend-item {
-    display: flex;
-    align-items: center;
-    padding: 8px 12px;
-    border-radius: 6px;
-    background: white;
-    cursor: pointer;
-    border: 1px solid #e2e8f0;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+.legend rect:hover {
+    stroke: rgba(0, 0, 0, 0.2);  /* 懸停時邊框顏色 */
+    stroke-width: 2px;           /* 懸停時邊框寬度 */
 }
 
-.legend-item:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.legend-item.selected {
-    background: #ebf8ff;
-    border-color: #4299e1;
-}
-
-.legend-color {
-    width: 16px;
-    height: 16px;
-    border-radius: 4px;
-    margin-right: 12px;
-    border: 2px solid rgba(255, 255, 255, 0.8);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-/* 控制按鈕 */
-.control-button {
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-weight: 500;
-    background: #4299e1;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.2s ease, background-color 0.2s ease;
-    outline: none;
-    box-shadow: 0 2px 4px rgba(66, 153, 225, 0.2);
-}
-
-.control-button:hover {
-    background: #3182ce;
-    transform: translateY(-1px);
-}
-
-.control-button:active {
-    transform: translateY(0);
-}
-
-/* 性能優化 */
-.node, .link {
-    will-change: transform;
-}
-
-/* Z-index 管理 */
-.link { z-index: 1; }
-.node { z-index: 2; }
-
-/* 響應式設計 */
+/* ======= 響應式設計 ======= */
 @media (max-width: 768px) {
-    .node text {
-        font-size: 10px;
-    }
-    
-    .attribute-title {
-        font-size: 14px;
-    }
-    
-    .control-button {
+    /* 手機版樣式調整 */
+    .node text { font-size: 10px; }
+    .attribute-title { font-size: 14px; }
+    .control-button { 
         padding: 6px 12px;
         font-size: 13px;
     }
-    
     .legend-container {
         grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     }
 }
 
-/* 打印樣式優化 */
+/* ======= 列印樣式優化 ======= */
 @media print {
-    .control-button {
-        display: none;
-    }
-    
-    .link {
-        stroke-opacity: 0.3;
-    }
-    
-    .node rect {
-        stroke-width: 0.5px;
-    }
+    .control-button { display: none; }   /* 隱藏控制按鈕 */
+    .link { stroke-opacity: 0.3; }       /* 調整連接線透明度 */
+    .node rect { stroke-width: 0.5px; }  /* 調整節點邊框寬度 */
 }
 
-
-/* Tooltip 容器 */
-.tooltip {
-    position: absolute;
-    padding: 8px 12px;
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    border-radius: 4px;
-    font-size: 12px;
-    pointer-events: none;
-    z-index: 1000;
-    opacity: 0;
-    transition: opacity 0.2s;
+/* ======= 性能優化 ======= */
+.node, .link {
+    will-change: transform;      /* 優化變形動畫性能 */
 }
 
-/* Tooltip 內容樣式 */
-.tooltip-content {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.tooltip-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-}
-
-.tooltip-label {
-    font-weight: 500;
-    color: #a0aec0;
-}
-
-.tooltip-value {
-    font-weight: 600;
-}
-
-/* Link hover 效果 */
-.link:hover {
-    stroke-opacity: 0.5;
-    cursor: pointer;
-}
-
-
-/* 圖例樣式 */
-.legend text {
-    fill: #2d3748;
-}
-
-.legend-title {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    fill: #1a202c;
-}
-
-/* 圖例項目陰影效果 */
-.legend rect {
-    stroke: rgba(0, 0, 0, 0.1);
-    stroke-width: 1px;
-}
-
-.legend rect:hover {
-    stroke: rgba(0, 0, 0, 0.2);
-    stroke-width: 2px;
-}
+/* ======= 層級管理 ======= */
+.link { z-index: 1; }           /* 連接線在下層 */
+.node { z-index: 2; }           /* 節點在上層 */

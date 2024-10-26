@@ -1,88 +1,88 @@
+// 定義 D3.js 的 Sankey 圖表生成器
 d3.sankey = function () {
-    var sankey = {},
-        nodeWidth = 24,
-        nodePadding = 8,
-        size = [1, 1],
-        nodes = [],
-        links = [],
-        attributeOrder = [];
+    // 初始化基本變數
+    var sankey = {},            // Sankey 物件本身
+        nodeWidth = 24,         // 節點寬度
+        nodePadding = 8,        // 節點之間的垂直間距
+        size = [1, 1],          // 圖表的尺寸 [寬, 高]
+        nodes = [],             // 儲存所有節點
+        links = [],             // 儲存所有連接
+        attributeOrder = [];     // 屬性的順序列表
 
+    // Getter/Setter 方法：設置或獲取節點寬度
     sankey.nodeWidth = function (_) {
-        if (!arguments.length) return nodeWidth;
-        nodeWidth = +_;
-        return sankey;
+        if (!arguments.length) return nodeWidth;  // 如果沒有參數，返回當前值
+        nodeWidth = +_;                          // 設置新值（轉換為數字）
+        return sankey;                          // 返回 sankey 物件，支持鏈式調用
     };
 
+    // Getter/Setter 方法：設置或獲取節點間距
     sankey.nodePadding = function (_) {
         if (!arguments.length) return nodePadding;
         nodePadding = +_;
         return sankey;
     };
 
+    // Getter/Setter 方法：設置或獲取節點列表
     sankey.nodes = function (_) {
         if (!arguments.length) return nodes;
         nodes = _;
         return sankey;
     };
 
+    // Getter/Setter 方法：設置或獲取連接列表
     sankey.links = function (_) {
         if (!arguments.length) return links;
         links = _;
         return sankey;
     };
 
+    // Getter/Setter 方法：設置或獲取圖表尺寸
     sankey.size = function (_) {
         if (!arguments.length) return size;
         size = _;
         return sankey;
     };
 
+    // 計算圖表佈局
     sankey.layout = function (iterations) {
-        computeNodeLinks();
-        computeNodeValues();
-        computeNodeBreadths();
-        computeNodeDepths(iterations);
-        computeLinkDepths();
-        computeColorID();
+        computeNodeLinks();       // 計算節點間的連接關係
+        computeNodeValues();      // 計算節點的值
+        computeNodeBreadths();    // 計算節點的水平位置
+        computeNodeDepths(iterations);  // 計算節點的垂直位置
+        computeLinkDepths();      // 計算連接的垂直位置
+        computeColorID();         // 計算顏色 ID
         return sankey;
     };
 
+    // 重新計算連接的位置（用於拖動時更新）
     sankey.relayout = function () {
         computeLinkDepths();
         return sankey;
     };
 
+    // 生成連接路徑的函數
     sankey.link = function () {
-        var curvature = 0.5;
+        var curvature = 0.5;  // 連接線的曲率
 
+        // 生成 SVG 路徑
         function link(d) {
-            var x0 = d.source.x + d.source.dx,
-                x1 = d.target.x,
-                xi = d3.interpolateNumber(x0, x1),
-                x2 = xi(curvature),
-                x3 = xi(1 - curvature),
-                y0 = d.source.y + d.sy + d.dy / 2,
-                y1 = d.target.y + d.ty + d.dy / 2;
-            return (
-                'M' +
-                x0 +
-                ',' +
-                y0 +
-                'C' +
-                x2 +
-                ',' +
-                y0 +
-                ' ' +
-                x3 +
-                ',' +
-                y1 +
-                ' ' +
-                x1 +
-                ',' +
-                y1
-            );
+            var x0 = d.source.x + d.source.dx,  // 起點 x 座標
+                x1 = d.target.x,                // 終點 x 座標
+                xi = d3.interpolateNumber(x0, x1),  // x 座標插值函數
+                x2 = xi(curvature),             // 控制點 1
+                x3 = xi(1 - curvature),         // 控制點 2
+                y0 = d.source.y + d.sy + d.dy / 2,  // 起點 y 座標
+                y1 = d.target.y + d.ty + d.dy / 2;  // 終點 y 座標
+
+            // 返回 SVG 路徑字串
+            return 'M' + x0 + ',' + y0 +     // 起點
+                   'C' + x2 + ',' + y0 +     // 第一控制點
+                   ' ' + x3 + ',' + y1 +     // 第二控制點
+                   ' ' + x1 + ',' + y1;      // 終點
         }
 
+        // Getter/Setter 方法：設置或獲取曲率
         link.curvature = function (_) {
             if (!arguments.length) return curvature;
             curvature = +_;
@@ -92,40 +92,43 @@ d3.sankey = function () {
         return link;
     };
 
-    // Populate the sourceLinks and targetLinks for each node.
-    // Also, if the source and target are not objects, assume they are indices.
+    // 計算節點間的連接關係
     function computeNodeLinks() {
+        // 初始化每個節點的連接數組
         nodes.forEach(function (node) {
-            node.sourceLinks = [];
-            node.targetLinks = [];
+            node.sourceLinks = [];  // 從該節點出發的連接
+            node.targetLinks = [];  // 到達該節點的連接
         });
+
+        // 建立節點之間的連接關係
         links.forEach(function (link) {
             var source = link.source,
                 target = link.target;
+            // 如果 source/target 是索引號，將其轉換為實際的節點對象
             if (typeof source === 'number')
                 source = link.source = nodes[link.source];
             if (typeof target === 'number')
                 target = link.target = nodes[link.target];
-            source.sourceLinks.push(link);
-            target.targetLinks.push(link);
+            // 將連接添加到相應節點的連接列表中
+            source.sourceLinks.push(link);  // 添加到源節點的出連接列表
+            target.targetLinks.push(link);  // 添加到目標節點的入連接列表
         });
     }
 
-    // Compute the value (size) of each node by summing the associated links.
+    // 計算每個節點的值（大小）
     function computeNodeValues() {
         nodes.forEach(function (node) {
+            // 取出連接和入連接值的最大值作為節點值
             node.value = Math.max(
-                d3.sum(node.sourceLinks, value),
-                d3.sum(node.targetLinks, value)
+                d3.sum(node.sourceLinks, value),  // 出連接值總和
+                d3.sum(node.targetLinks, value)   // 入連接值總和
             );
         });
     }
 
-    // Iteratively assign the breadth (x-position) for each node.
-    // Nodes are assigned the maximum breadth of incoming neighbors plus one;
-    // nodes with no incoming links are assigned breadth zero, while
-    // nodes with no outgoing links are assigned the maximum breadth.
+    // 計算節點的水平位置（breadth）
     function computeNodeBreadths() {
+        // 定義屬性的順序
         attributeOrder = [
             'buying',
             'maintenance',
@@ -135,60 +138,62 @@ d3.sankey = function () {
             'safety',
         ];
 
-        // Iterate through each attribute in the order
-        attributeOrder.forEach(function (
-            attribute,
-            i
-        ) {
-            // Set the x-position (breadth) for each value node corresponding to the attribute
+        // 遍歷每個屬性
+        attributeOrder.forEach(function (attribute, i) {
+            // 找出屬於當前屬性的所有節點
             var nodesForAttribute = nodes.filter(
                 function (node) {
                     return node.name.startsWith(attribute);
                 }
             );
 
+            // 設置這些節點的水平位置
             nodesForAttribute.forEach(function (node) {
-                node.x = i;
-                node.dx = nodeWidth;
+                node.x = i;                 // 設置 x 座標
+                node.dx = nodeWidth;        // 設置節點寬度
             });
         });
 
-        // Move sinks to the rightmost position
+        // 將終點節點移到最右側
         moveSinksRight(attributeOrder.length);
 
-        // Scale node breadths
+        // 根據圖表寬度縮放節點的水平位置
         scaleNodeBreadths(
             (size[0] - nodeWidth) /
             (attributeOrder.length - 1)
         );
     }
 
+    // 將源節點（沒有入連接的節點）向右移動
     function moveSourcesRight() {
         nodes.forEach(function (node) {
-            if (!node.targetLinks.length) {
-                node.x =
-                    d3.min(node.sourceLinks, function (d) {
-                        return d.target.x;
-                    }) - 1;
+            if (!node.targetLinks.length) {  // 如果是源節點
+                node.x = d3.min(node.sourceLinks, function (d) {
+                    return d.target.x;
+                }) - 1;
             }
         });
     }
 
+    // 將終點節點（沒有出連接的節點）移到最右側
     function moveSinksRight(x) {
         nodes.forEach(function (node) {
-            if (!node.sourceLinks.length) {
+            if (!node.sourceLinks.length) {  // 如果是終點節點
                 node.x = x - 1;
             }
         });
     }
 
+    // 縮放節點的水平位置以適應圖表寬度
     function scaleNodeBreadths(kx) {
         nodes.forEach(function (node) {
-            node.x *= kx;
+            node.x *= kx;  // 應用縮放係數
         });
     }
 
+    // 計算節點的垂直位置
     function computeNodeDepths(iterations) {
+        // 按 x 座標將節點分組
         var nodesByBreadth = d3
             .nest()
             .key(function (d) {
@@ -200,18 +205,18 @@ d3.sankey = function () {
                 return d.values;
             });
 
-        //
-        initializeNodeDepth();
-        resolveCollisions();
+        // 執行迭代優化過程
+        initializeNodeDepth();       // 初始化垂直位置
+        resolveCollisions();         // 解決節點重疊
         for (
-            var alpha = 1;
+            var alpha = 1;           // 鬆弛因子
             iterations > 0;
             --iterations
         ) {
-            relaxRightToLeft((alpha *= 0.99));
-            resolveCollisions();
-            relaxLeftToRight(alpha);
-            resolveCollisions();
+            relaxRightToLeft((alpha *= 0.99));  // 從右到左調整
+            resolveCollisions();                // 解決重疊
+            relaxLeftToRight(alpha);            // 從左到右調整
+            resolveCollisions();                // 再次解決重疊
         }
 
         function initializeNodeDepth() {
@@ -606,57 +611,72 @@ d3.sankey = function () {
             .attr('text-anchor', 'middle')
             .text(d => d.name.split('-')[0]);
 
+        
+            // 定義圖例配置
+            const legendConfig = {
+                columns: 2,  // 分成兩列
+                columnWidth: 150,  // 每列寬度
+                verticalSpacing: 25,  // 垂直間距
+                itemHeight: 18,  // 每個項目高度
+                leftPadding: -350  // 向左移動的距離
+            };
+
+            // 修改 legendGroup 的位置
             const legendGroup = svg.append('g')
-            .attr('class', 'legend')
-            .attr('transform', `translate(${width}, 80)`);  // 調整位置到右側
-        
-        // 添加圖例標題
-        legendGroup.append('text')
-            .attr('class', 'legend-title')
-            .attr('x', 0)
-            .attr('y', -20)
-            .style('font-size', '14px')
-            .style('font-weight', 'bold')
-            .text('Attributes Legend');
-        
-        // 為每個屬性創建圖例項
-        Object.entries(colorScales).forEach(([attribute, colors], index) => {
-            const attributeGroup = legendGroup.append('g')
-                .attr('transform', `translate(0, ${index * 80})`);
-        
-            // 添加屬性名稱
-            attributeGroup.append('text')
-                .attr('x', 0)
-                .attr('y', 0)
-                .style('font-size', '12px')
+                .attr('class', 'legend')
+                .attr('transform', `translate(${width}, 80)`);
+
+            // 添加圖例標題
+            legendGroup.append('text')
+                .attr('class', 'legend-title')
+                .attr('x', legendConfig.columnWidth / 2)  // 置中標題
+                .attr('y', -20)
+                .style('font-size', '14px')
                 .style('font-weight', 'bold')
-                .text(attribute);
-        
-            // 為每個顏色值創建圖例項
-            colors.forEach((color, colorIndex) => {
-                const legendItem = attributeGroup.append('g')
-                    .attr('transform', `translate(0, ${colorIndex * 20 + 10})`);
-        
-                // 添加顏色方塊
-                legendItem.append('rect')
-                    .attr('width', 15)
-                    .attr('height', 15)
-                    .attr('rx', 2)
-                    .style('fill', color);
-        
-                // 找到對應的節點來獲取實際值
-                const node = graph.nodes.find(n => 
-                    n.name.startsWith(attribute) && n.cid === colorIndex
-                );
-                
-                // 添加文字標籤
-                legendItem.append('text')
-                    .attr('x', 25)
-                    .attr('y', 12)
+                .text('Attributes Legend');
+
+            // 為每個屬性創建圖例項
+            Object.entries(colorScales).forEach(([attribute, colors], index) => {
+                // 計算列和行位置
+                const column = Math.floor(index / 3);  // 每3個屬性換一列
+                const row = index % 3;  // 在當前列中的位置
+
+                const attributeGroup = legendGroup.append('g')
+                    .attr('transform', `translate(${column * legendConfig.columnWidth}, ${row * (colors.length + 1) * legendConfig.verticalSpacing})`);
+
+                // 添加屬性名稱
+                attributeGroup.append('text')
+                    .attr('x', 0)
+                    .attr('y', 0)
                     .style('font-size', '12px')
-                    .text(node ? node.name.split('-')[1] : `Value ${colorIndex + 1}`);
+                    .style('font-weight', 'bold')
+                    .text(attribute);
+
+                // 為每個顏色值創建圖例項
+                colors.forEach((color, colorIndex) => {
+                    const legendItem = attributeGroup.append('g')
+                        .attr('transform', `translate(0, ${(colorIndex + 1) * legendConfig.itemHeight})`);
+
+                    // 添加顏色方塊
+                    legendItem.append('rect')
+                        .attr('width', 15)
+                        .attr('height', 15)
+                        .attr('rx', 2)
+                        .style('fill', color);
+
+                    // 找到對應的節點來獲取實際值
+                    const node = graph.nodes.find(n => 
+                        n.name.startsWith(attribute) && n.cid === colorIndex
+                    );
+                    
+                    // 添加文字標籤
+                    legendItem.append('text')
+                        .attr('x', 25)
+                        .attr('y', 12)
+                        .style('font-size', '12px')
+                        .text(node ? node.name.split('-')[1] : `Value ${colorIndex + 1}`);
+                });
             });
-        });
 
         d3.select('#resetBtn').on('click', resetView);
 
