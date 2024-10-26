@@ -5,20 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Air Pollution Horizon Charts</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <!-- Only include the necessary Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="313551055.css">
 </head>
-<body class="bg-light">
+<body>
     <div class="container">
-        <header class="my-4">
+        <header>
             <h1 class="title">Air Pollution in Seoul</h1>
             <p class="subtitle">Analysis of Air Quality Data through Horizon Charts</p>
         </header>
 
         <div class="controls-container">
+            <!-- Pollutant selector -->
             <div class="pollutant-controls">
                 <h6 class="control-label">Select Pollutant</h6>
-                <div class="btn-group pollutant-selector" role="group">
+                <div class="pollutant-selector">
                     <input type="radio" class="btn-check" name="type" id="SO2" value="SO2" checked>
                     <label class="btn btn-outline-primary" for="SO2">SO₂</label>
 
@@ -39,6 +41,7 @@
                 </div>
             </div>
 
+            <!-- Year selector -->
             <div class="year-controls">
                 <h6 class="control-label">Select Year</h6>
                 <select class="form-select" id="yearSelect">
@@ -51,12 +54,9 @@
 
         <div class="chart-section">
             <div id="loading" class="loading-spinner">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
+                <div class="spinner-border text-primary"></div>
             </div>
-
-            <div id="horizon-chart" class="chart-container"></div>
+            <div id="horizon-chart"></div>
         </div>
 
         <footer class="footer">
@@ -67,7 +67,8 @@
         </footer>
     </div>
 
-    <script src="https://d3js.org/d3.v6.js"></script>
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="https://unpkg.com/horizon-timeseries-chart"></script>
     <script src="313551055.js"></script>
 </body>
