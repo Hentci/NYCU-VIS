@@ -445,6 +445,10 @@ d3.sankey = function () {
     }
 
     const render = (graph) => {
+
+
+        const tooltip = d3.select("body").append("div").attr("class", "tooltip");
+
         svg.selectAll('*').remove();
         
         currentGraph = graph;
@@ -481,15 +485,78 @@ d3.sankey = function () {
         });
 
         const link = svg.append('g')
-            .selectAll('.link')
-            .data(graph.links)
-            .enter()
-            .append('path')
-            .attr('class', 'link')
-            .attr('d', path)
-            .attr('transform', `translate(${margin.left},${margin.top})`)
-            .style('stroke-width', d => Math.max(1, d.dy))
-            .sort((a, b) => b.dy - a.dy);
+        .selectAll('.link')
+        .data(graph.links)
+        .enter()
+        .append('path')
+        .attr('class', 'link')
+        .attr('d', path)
+        .attr('transform', `translate(${margin.left},${margin.top})`)
+        .style('stroke-width', d => Math.max(1, d.dy))
+        .sort((a, b) => b.dy - a.dy)
+        // 在這裡加入以下的滑鼠事件處理程式
+        .on('mouseover', function(d) {
+            // 計算總流量
+            const totalSourceFlow = d3.sum(d.source.sourceLinks, l => l.value);
+            const totalTargetFlow = d3.sum(d.target.targetLinks, l => l.value);
+            
+            // 計算比例
+            const sourceRatio = (d.value / totalSourceFlow * 100).toFixed(1);
+            const targetRatio = (d.value / totalTargetFlow * 100).toFixed(1);
+
+            // 更新 tooltip 內容
+            tooltip.html(`
+                <div class="tooltip-content">
+                    <div class="tooltip-row">
+                        <span class="tooltip-label">From:</span>
+                        <span class="tooltip-value">${d.source.name.split('-')[1]}</span>
+                    </div>
+                    <div class="tooltip-row">
+                        <span class="tooltip-label">To:</span>
+                        <span class="tooltip-value">${d.target.name.split('-')[1]}</span>
+                    </div>
+                    <div class="tooltip-row">
+                        <span class="tooltip-label">Count:</span>
+                        <span class="tooltip-value">${d.value}</span>
+                    </div>
+                    <div class="tooltip-row">
+                        <span class="tooltip-label">Source Ratio:</span>
+                        <span class="tooltip-value">${sourceRatio}%</span>
+                    </div>
+                    <div class="tooltip-row">
+                        <span class="tooltip-label">Target Ratio:</span>
+                        <span class="tooltip-value">${targetRatio}%</span>
+                    </div>
+                </div>
+            `);
+
+            // 設定 tooltip 位置
+            const [mouseX, mouseY] = d3.mouse(document.body);
+            tooltip
+                .style('left', `${mouseX + 10}px`)
+                .style('top', `${mouseY - 10}px`)
+                .style('opacity', 1);
+
+            // 突顯當前連接
+            d3.select(this)
+                .style('stroke-opacity', 0.5);
+        })
+        .on('mousemove', function() {
+            // 更新 tooltip 位置
+            const [mouseX, mouseY] = d3.mouse(document.body);
+            tooltip
+                .style('left', `${mouseX + 10}px`)
+                .style('top', `${mouseY - 10}px`);
+        })
+        .on('mouseout', function() {
+            // 隱藏 tooltip
+            tooltip
+                .style('opacity', 0);
+
+            // 恢復連接原本的樣式
+            d3.select(this)
+                .style('stroke-opacity', 0.2);
+        });
 
         const node = svg.append('g')
             .selectAll('.node')
@@ -540,6 +607,10 @@ d3.sankey = function () {
             .text(d => d.name.split('-')[0]);
 
         d3.select('#resetBtn').on('click', resetView);
+
+        return () => {
+            tooltip.remove();
+        };
     };
 
     d3$1.text("http://vis.lab.djosix.com:2024/data/car.data").then(function (r) {

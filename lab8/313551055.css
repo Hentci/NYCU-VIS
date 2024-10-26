@@ -41,7 +41,7 @@
     fill: none;
     stroke: #000;
     stroke-opacity: 0.2;
-    pointer-events: none;  /* 防止連接線干擾拖動 */
+    /* pointer-events: none;  防止連接線干擾拖動 */
     mix-blend-mode: multiply;  /* 改善視覺效果 */
 }
 
@@ -162,4 +162,47 @@
     .node rect {
         stroke-width: 0.5px;
     }
+}
+
+
+/* Tooltip 容器 */
+.tooltip {
+    position: absolute;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 4px;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+/* Tooltip 內容樣式 */
+.tooltip-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.tooltip-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.tooltip-label {
+    font-weight: 500;
+    color: #a0aec0;
+}
+
+.tooltip-value {
+    font-weight: 600;
+}
+
+/* Link hover 效果 */
+.link:hover {
+    stroke-opacity: 0.5;
+    cursor: pointer;
 }
