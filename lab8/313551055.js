@@ -161,28 +161,6 @@ d3.sankey = function () {
             (size[0] - nodeWidth) /
             (attributeOrder.length - 1)
         );
-        /*
-        var remainingNodes = nodes,
-            nextNodes,
-            x = 0;
-    
-        while (remainingNodes.length) {
-          nextNodes = [];
-          remainingNodes.forEach(function(node) {
-            node.x = x;
-            node.dx = nodeWidth;
-            node.sourceLinks.forEach(function(link) {
-              nextNodes.push(link.target);
-            });
-          });
-          remainingNodes = nextNodes;
-          ++x;
-        }
-    
-        //
-        moveSinksRight(x);
-        scaleNodeBreadths((size[0] - nodeWidth) / (x - 1));
-        */
     }
 
     function moveSourcesRight() {
@@ -445,11 +423,9 @@ d3.sankey = function () {
         svg.selectAll('.link').attr('d', path);
     }
 
-    // Enhanced reset view function with smooth transitions
     function resetView() {
         if (!currentGraph || originalNodePositions.length === 0) return;
 
-        // Reset node positions with transition
         svg.selectAll('.node')
             .transition()
             .duration(750)
@@ -462,7 +438,6 @@ d3.sankey = function () {
                 return `translate(${margin.left + d.x},${margin.top + d.y})`;
             });
 
-        // Reset links with transition
         svg.selectAll('.link')
             .transition()
             .duration(750)
@@ -470,17 +445,16 @@ d3.sankey = function () {
     }
 
     const render = (graph) => {
-        // Clear existing content
         svg.selectAll('*').remove();
         
         currentGraph = graph;
         
         var nodeMap = {};
-        graph.nodes.forEach(function (x) {
+        graph.nodes.forEach(function(x) {
             nodeMap[x.name] = x;
         });
         
-        graph.links = graph.links.map(function (x) {
+        graph.links = graph.links.map(function(x) {
             return {
                 source: nodeMap[x.source],
                 target: nodeMap[x.target],
@@ -489,10 +463,9 @@ d3.sankey = function () {
         });
 
         sankey.nodes(graph.nodes)
-              .links(graph.links)
-              .layout(32);
+            .links(graph.links)
+            .layout(32);
 
-        // Store original positions after initial layout
         originalNodePositions = graph.nodes.map(node => ({
             name: node.name,
             y: node.y
@@ -507,38 +480,17 @@ d3.sankey = function () {
             linkGroups[key].push(link);
         });
 
-        // Add the link groups
-        const band = svg.append('g').selectAll('.band')
-            .data(Object.values(linkGroups))
-            .enter().append('g')
-            .attr('class', 'band');
-
-        // Add the links within each group
-        const link = band.selectAll('.link')
-            .data((d) => d)
-            .enter().append('path')
+        const link = svg.append('g')
+            .selectAll('.link')
+            .data(graph.links)
+            .enter()
+            .append('path')
             .attr('class', 'link')
-            .attr('transform', `translate(${margin.left},${margin.top})`)
             .attr('d', path)
+            .attr('transform', `translate(${margin.left},${margin.top})`)
             .style('stroke-width', d => Math.max(1, d.dy))
             .sort((a, b) => b.dy - a.dy);
 
-        link.append('title').text(d => 
-            `${d.source.name} → ${d.target.name}: ${d.value}`
-        );
-
-        // Add attribute titles
-        svg.selectAll('.attribute-title')
-           .data(graph.nodes.filter(d => d.cid === 0))
-           .enter()
-           .append('text')
-           .attr('class', 'attribute-title')
-           .attr('x', d => margin.left + d.x)
-           .attr('y', 30)
-           .attr('text-anchor', 'middle')
-           .text(d => d.name.split('-')[0]);
-
-        // Add nodes
         const node = svg.append('g')
             .selectAll('.node')
             .data(graph.nodes)
@@ -564,9 +516,7 @@ d3.sankey = function () {
                 const colorScale = colorScales[d.name.split('-')[0]];
                 return (d.color = colorScale[d.cid]);
             })
-            .style('stroke', d => d3.rgb(d.color).darker(2))
-            .append('title')
-            .text(d => d.name);
+            .style('stroke', d => d3.rgb(d.color).darker(2));
 
         node.append('text')
             .attr('x', -6)
@@ -574,16 +524,24 @@ d3.sankey = function () {
             .attr('dy', '.35em')
             .attr('text-anchor', 'end')
             .attr('transform', null)
-            .text(d => d.label.split('-')[1])
+            .text(d => d.name.split('-')[1])
             .filter(d => d.x < width / 2)
             .attr('x', 6 + sankey.nodeWidth())
             .attr('text-anchor', 'start');
 
-        // Add reset button functionality
+        svg.selectAll('.attribute-title')
+            .data(graph.nodes.filter(d => d.cid === 0))
+            .enter()
+            .append('text')
+            .attr('class', 'attribute-title')
+            .attr('x', d => margin.left + d.x)
+            .attr('y', 30)
+            .attr('text-anchor', 'middle')
+            .text(d => d.name.split('-')[0]);
+
         d3.select('#resetBtn').on('click', resetView);
     };
 
-    // Load and process data
     d3$1.text("http://vis.lab.djosix.com:2024/data/car.data").then(function (r) {
         const loadedData = 'buying,maintenance,doors,persons,luggage boot,safety\n' + r;
         const data = d3.csvParse(loadedData);
@@ -591,7 +549,6 @@ d3.sankey = function () {
         render(transformedData);
     });
 
-    // Data transformation function
     function transformData(data) {
         const nodesById = {};
         const linksMap = {};
