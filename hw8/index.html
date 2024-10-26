@@ -1,0 +1,69 @@
+<!-- HTML5 文檔類型聲明 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- 設定文檔字符編碼 -->
+    <meta charset="UTF-8">
+    <!-- 設定移動裝置視口 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 頁面標題 -->
+    <title>Car Evaluation Sankey Diagram</title>
+    <!-- 引入自定義 CSS -->
+    <link rel="stylesheet" href="313551055.css" />
+    <!-- 引入 Tailwind CSS 框架 -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<!-- 使用 Tailwind 的淺灰色背景 -->
+<body class="bg-gray-50">
+    <!-- 主容器：自動邊距、內邊距設定 -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- 頁面標題區域 -->
+        <header class="mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">Car Evaluation Analysis</h1>
+            <p class="text-gray-600">Interactive Sankey Diagram Visualization</p>
+        </header>
+
+        <!-- 主要內容區域：白色背景、陰影效果 -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <!-- 控制按鈕區域 -->
+            <div class="mb-4">
+                <!-- 按鈕容器 -->
+                <div class="flex space-x-4 mb-4" id="controls">
+                    <!-- Reset 按鈕：藍色背景、hover 效果 -->
+                    <button id="resetBtn" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+                        Reset View
+                    </button>
+                </div>
+            </div>
+            <!-- SVG 圖表容器：可滾動 -->
+            <div class="overflow-auto relative">
+                <!-- Sankey 圖表的 SVG 元素 -->
+                <svg id="sankey-diagram" width="1000" height="600"></svg>
+            </div>
+        </div>
+
+        <!-- 頁腳區域 -->
+        <footer class="text-center text-gray-600">
+            <!-- 學號顯示 -->
+            <p>Student ID: 313551055</p>
+            <!-- 數據來源資訊 -->
+            <p class="text-sm mt-2">Data source: UCI Car Evaluation Dataset</p>
+            <!-- 使用說明區域 -->
+            <div class="mt-4 text-sm">
+                <p><strong>Usage Instructions:</strong></p>
+                <!-- 使用說明列表 -->
+                <ul class="list-disc list-inside">
+                    <li>Drag nodes vertically to reorganize the diagram</li>
+                    <li>Click the Reset View button to restore the original layout</li>
+                </ul>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 引入 D3.js 庫 -->
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <!-- 引入自定義 JavaScript -->
+    <script src="313551055.js"></script>
+</body>
+</html>

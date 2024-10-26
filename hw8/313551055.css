@@ -1,0 +1,144 @@
+/* ======= 基礎容器設置 ======= */
+#sankey-diagram {
+    cursor: default;                /* 預設游標樣式 */
+    -webkit-user-select: none;      /* Safari 瀏覽器禁止選擇文字 */
+    -moz-user-select: none;         /* Firefox 瀏覽器禁止選擇文字 */
+    -ms-user-select: none;          /* IE/Edge 瀏覽器禁止選擇文字 */
+    user-select: none;              /* 標準語法：禁止選擇文字 */
+    position: relative;             /* 設定相對定位 */
+    overflow: visible;              /* 允許內容溢出顯示 */
+}
+
+/* ======= 節點樣式 ======= */
+.node {
+    isolation: isolate;             /* 建立新的堆疊上下文 */
+}
+
+.node rect {
+    fill-opacity: 0.9;             /* 節點填充透明度 */
+    shape-rendering: crispEdges;    /* 使邊緣更清晰 */
+    stroke-width: 1px;             /* 邊框寬度 */
+    cursor: ns-resize;             /* 南北方向的調整游標 */
+    transition: none;              /* 禁用過渡效果以提升性能 */
+}
+
+.node rect:hover {
+    fill-opacity: 1;               /* 懸停時完全不透明 */
+    stroke-width: 2px;             /* 懸停時加粗邊框 */
+}
+
+.node text {
+    pointer-events: none;          /* 防止文字干擾鼠標事件 */
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);  /* 文字陰影效果 */
+    font-size: 12px;              /* 文字大小 */
+    font-weight: 500;             /* 文字粗細 */
+    dominant-baseline: middle;     /* 文字垂直置中 */
+    fill: #333;                   /* 文字顏色 */
+}
+
+/* ======= 連接線樣式 ======= */
+.link {
+    fill: none;                    /* 無填充 */
+    stroke: #000;                  /* 線條顏色 */
+    stroke-opacity: 0.2;           /* 線條透明度 */
+    mix-blend-mode: multiply;      /* 混合模式：重疊部分顏色混合 */
+}
+
+/* ======= 屬性標題樣式 ======= */
+.attribute-title {
+    font-size: 16px;              /* 標題文字大小 */
+    font-weight: 600;             /* 文字粗細 */
+    fill: #2d3748;                /* 文字顏色 */
+    text-anchor: middle;          /* 文字水平置中 */
+    pointer-events: none;         /* 防止文字干擾鼠標事件 */
+    text-shadow: 0 1px 0 #fff;    /* 文字陰影效果 */
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;  /* 字體設定 */
+}
+
+/* ======= Tooltip 相關樣式 ======= */
+/* Tooltip 容器 */
+.tooltip {
+    position: absolute;           /* 絕對定位 */
+    padding: 8px 12px;           /* 內邊距 */
+    background: rgba(0, 0, 0, 0.8); /* 背景色（半透明黑） */
+    color: white;                /* 文字顏色 */
+    border-radius: 4px;          /* 圓角 */
+    font-size: 12px;             /* 文字大小 */
+    pointer-events: none;        /* 防止干擾鼠標事件 */
+    z-index: 1000;              /* 層級設定 */
+    opacity: 0;                  /* 預設隱藏 */
+    transition: opacity 0.2s;    /* 淡入淡出效果 */
+}
+
+/* Tooltip 內容布局 */
+.tooltip-content {
+    display: flex;               /* Flexbox 布局 */
+    flex-direction: column;      /* 垂直排列 */
+    gap: 4px;                   /* 元素間距 */
+}
+
+.tooltip-row {
+    display: flex;               /* Flexbox 布局 */
+    justify-content: space-between; /* 兩端對齊 */
+    gap: 12px;                  /* 元素間距 */
+}
+
+.tooltip-label {
+    font-weight: 500;           /* 文字粗細 */
+    color: #a0aec0;             /* 標籤文字顏色 */
+}
+
+.tooltip-value {
+    font-weight: 600;           /* 數值文字粗細 */
+}
+
+/* ======= 圖例樣式 ======= */
+.legend text {
+    fill: #2d3748;              /* 圖例文字顏色 */
+}
+
+.legend-title {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    fill: #1a202c;              /* 圖例標題顏色 */
+}
+
+/* 圖例方塊樣式 */
+.legend rect {
+    stroke: rgba(0, 0, 0, 0.1);  /* 方塊邊框顏色 */
+    stroke-width: 1px;           /* 邊框寬度 */
+}
+
+.legend rect:hover {
+    stroke: rgba(0, 0, 0, 0.2);  /* 懸停時邊框顏色 */
+    stroke-width: 2px;           /* 懸停時邊框寬度 */
+}
+
+/* ======= 響應式設計 ======= */
+@media (max-width: 768px) {
+    /* 手機版樣式調整 */
+    .node text { font-size: 10px; }
+    .attribute-title { font-size: 14px; }
+    .control-button { 
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+    .legend-container {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+}
+
+/* ======= 列印樣式優化 ======= */
+@media print {
+    .control-button { display: none; }   /* 隱藏控制按鈕 */
+    .link { stroke-opacity: 0.3; }       /* 調整連接線透明度 */
+    .node rect { stroke-width: 0.5px; }  /* 調整節點邊框寬度 */
+}
+
+/* ======= 性能優化 ======= */
+.node, .link {
+    will-change: transform;      /* 優化變形動畫性能 */
+}
+
+/* ======= 層級管理 ======= */
+.link { z-index: 1; }           /* 連接線在下層 */
+.node { z-index: 2; }           /* 節點在上層 */
